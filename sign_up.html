@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;height:100vh;display:flex;justify-content:center;align-items:center;background:#f7f3ef;font-family:"Poppins",sans-serif;}
+.container{background:#ffffffcc;width:380px;padding:30px 35px;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.15);text-align:center;position:relative;}
+h2{margin-bottom:25px;color:#4b2e1e;}
+label{display:block;margin-top:12px;text-align:left;color:#4b2e1e;font-size:15px;position:relative;}
+.input-wrapper{position:relative;}
+input[type="text"],input[type="email"],input[type="password"]{width:100%;padding:12px;margin-top:5px;border:1px solid #c8b7a6;border-radius:10px;font-size:15px;}
+.show-pass{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;}
+.btn{width:100%;padding:12px;border:none;margin-top:18px;font-size:16px;border-radius:12px;cursor:pointer;font-weight:600;transition:0.2s;}
+.create-btn{background-color:#6e432a;color:white;}
+.create-btn:hover{background-color:#573522;}
+.back-btn{background-color:#d4c2b2;color:#3b2a20;}
+.back-btn:hover{background-color:#c3b1a0;}
+.message{margin-top:15px;font-size:14px;}
+</style>
+</head>
+<body>
+   <form action="sign_up.php" method="POST">
+<div class="container">
+    <h2>Sign Up</h2>
+
+    <label>User Name:</label>
+    <input type="text" name="username" required>
+
+    <label>Phone Number:</label>
+    <input type="text" name="phone" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Password:</label>
+    <input type="password" name="password" required>
+
+    <button class="btn create-btn" type="submit" name="submit">
+        Create Account
+    </button>
+
+</div>
+</form>
+
+<script>
+function togglePassword(){
+    const pass=document.getElementById('password');
+    pass.type=pass.type==='password'?'text':'password';
+}
+function createAccount(){
+    const u=document.getElementById('username').value.trim(),
+          p=document.getElementById('phone').value.trim(),
+          e=document.getElementById('email').value.trim(),
+          pass=document.getElementById('password').value.trim(),
+          msg=document.getElementById('message');
+    if(!u||!p||!e||!pass){msg.style.color="red";msg.textContent="يرجى ملء جميع الحقول!";return;}
+    const hasUpper=/[A-Z]/.test(pass),
+          letters=(pass.match(/[A-Za-z]/g)||[]).length;
+      if(pass.length<8||letters<2||!hasUpper){msg.style.color="red";msg.textContent="كلمة المرور يجب أن تكون 8 خانات على الأقل، تحتوي على حرفين على الأقل، وواحد منهم كبير.";return;}
+    localStorage.setItem('user_'+u,JSON.stringify({phone:p,email:e,password:pass}));
+    msg.style.color="green";
+    msg.textContent=`أهلا فيك في موقعنا، ${u}! تجربة ممتعة!`;
+    setTimeout(()=>{window.location.href="select.html";},2000);
+}
+</script>
+</body>
+</html>
+

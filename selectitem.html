@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Coffee</title>
+<style>
+body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;background:#fff;margin:0;padding:20px;color:#513021;}
+h1{text-align:center;margin-bottom:10px;font-weight:bold;}
+hr{border:1px solid #ccc;margin-bottom:30px;}
+fieldset{border:2px solid #513021;border-radius:10px;padding:15px 20px;margin-bottom:20px;background:#fff;}
+legend{font-weight:bold;}
+label{margin-left:5px;font-size:16px;}
+input[type="radio"]{margin-top:10px;}
+button{background:#513021;color:#fff;border:none;padding:12px 30px;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold;margin:20px auto 0;display:block;}
+button:hover{background:#573522;}
+.order-summary{display:none;background:#f9f3ee;border:2px solid #513021;border-radius:10px;padding:20px;margin:30px 0;direction:rtl;}
+.order-summary h3{text-align:center;margin-top:0;color:#513021;}
+.order-item{display:flex;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #ccc;}
+.order-item:last-child{border-bottom:none;font-weight:bold;color:#513021;font-size:18px;}
+.price{font-weight:bold;}
+.total-row{font-size:18px;font-weight:bold;color:#513021;margin-top:10px;padding-top:10px;border-top:2px solid #513021;}
+</style>
+</head>
+<body>
+<h1>خلي قهوتك على مزاجك ... ضيف لمستك الخاصة</h1>
+<hr>
+
+<form id="coffeeForm" action="selectitem.php" method="post">
+<fieldset>
+<legend>الحجم (Size)</legend>
+<input type="radio" id="regular" name="size" value="0" checked><label for="regular">Regular</label><br>
+<input type="radio" id="super" name="size" value="3"><label for="super">Super (3 JD)</label>
+</fieldset>
+
+<fieldset>
+<legend>النوع (Milk)</legend>
+<input type="radio" id="none" name="milk" value="0" checked><label for="none">None</label><br>
+<input type="radio" id="fullfat" name="milk" value="0"><label for="fullfat">Full Fat Milk</label><br>
+<input type="radio" id="oat" name="milk" value="1.5"><label for="oat">Oat Milk (1.5 JD)</label><br>
+<input type="radio" id="soy" name="milk" value="1.5"><label for="soy">Soy Milk (1.5 JD)</label><br>
+<input type="radio" id="lactose" name="milk" value="1.5"><label for="lactose">Lactose Milk (1.5 JD)</label><br>
+<input type="radio" id="coconut" name="milk" value="1.5"><label for="coconut">Coconut Milk (1.5 JD)</label><br>
+<input type="radio" id="almond" name="milk" value="1.5"><label for="almond">Almond Milk (1.5 JD)</label>
+</fieldset>
+
+<fieldset>
+<legend>السكر (Sugar)</legend>
+<input type="radio" id="nosugar" name="sugar" value="0" checked><label for="nosugar">No Sugar</label><br>
+<input type="radio" id="medium" name="sugar" value="0"><label for="medium">Medium Sweet</label><br>
+<input type="radio" id="sweet" name="sugar" value="0"><label for="sweet">Sweet</label>
+</fieldset>
+
+<fieldset>
+<legend>إسبريسو (Espresso Shot)</legend>
+<input type="radio" id="noneShot" name="espresso" value="0" checked><label for="noneShot">No Extra Shot</label><br>
+<input type="radio" id="extra" name="espresso" value="1"><label for="extra">Extra Shot (1 JD)</label>
+</fieldset>
+
+<fieldset>
+<legend>كريم (Cream) *For hot drinks</legend>
+<input type="radio" id="nocream" name="cream" value="0" checked><label for="nocream">No</label><br>
+<input type="radio" id="creamyes" name="cream" value="1.5"><label for="creamyes">Yes (1.5 JD)</label>
+</fieldset>
+
+<div class="order-summary" id="orderSummary">
+<h3>ملخص طلبك</h3>
+<div id="summaryContent"></div>
+</div>
+
+<button type="button" id="showSummaryBtn">عرض ملخص الطلب</button>
+<button type="submit" id="confirmOrderBtn" style="display:none;">تأكيد الطلب</button>
+</form>
+
+<script>
+const deliveryPrice = 2; // التوصيل ثابت
+const basePrice = parseFloat(localStorage.getItem('basePrice') || 0);
+const coffeeName = localStorage.getItem('coffeeName') || 'مشروبك';
+
+function getSelectedLabel(name){
+  const sel=document.querySelector(`input[name="${name}"]:checked`);
+  return sel?document.querySelector(`label[for="${sel.id}"]`).textContent:sel.value;
+}
+
+function updateOrderSummary(){
+  let total = basePrice;
+  let html = `<div class="order-item"><span>القهوة: ${coffeeName}</span><span class="price">${basePrice.toFixed(2)} JD</span></div>`;
+  
+  ['size','milk','sugar','espresso','cream'].forEach(name=>{
+    const sel=document.querySelector(`input[name="${name}"]:checked`);
+    const price=parseFloat(sel.value);
+    total += price;
+    html+=`<div class="order-item"><span>${name==='size'?'الحجم':name==='milk'?'النوع':name==='sugar'?'السكر':name==='espresso'?'الإسبريسو':'الكريم'}: ${getSelectedLabel(name)}</span><span class="price">${price>0?'+'+price.toFixed(2):'0.00'} JD</span></div>`;
+  });
+
+  html+=`<div class="order-item"><span>التوصيل</span><span class="price">+${deliveryPrice.toFixed(2)} JD</span></div>`;
+  total += deliveryPrice;
+  html+=`<div class="order-item total-row"><span>السعر الإجمالي</span><span class="price">${total.toFixed(2)} JD</span></div>`;
+
+  document.getElementById('summaryContent').innerHTML = html;
+  document.getElementById('orderSummary').style.display = 'block';
+  document.getElementById('showSummaryBtn').style.display = 'none';
+  document.getElementById('confirmOrderBtn').style.display = 'block';
+}
+
+document.getElementById('showSummaryBtn').addEventListener('click', updateOrderSummary);
+
+// document.getElementById('coffeeForm').addEventListener('submit', function(e){
+//   e.preventDefault();
+//   const total = parseFloat(localStorage.getItem('basePrice') || 0) + deliveryPrice +
+//     ['size','milk','sugar','espresso','cream'].reduce((acc,name)=>{
+//       const sel=document.querySelector(`input[name="${name}"]:checked`);
+//       return acc + parseFloat(sel.value);
+//     },0);
+
+//   const orderDetails = ['size','milk','sugar','espresso','cream'].map(name=>{
+//     const sel=document.querySelector(`input[name="${name}"]:checked`);
+//     const price=parseFloat(sel.value);
+//     return `${name==='size'?'الحجم':name==='milk'?'النوع':name==='sugar'?'السكر':name==='espresso'?'الإسبريسو':'الكريم'}: ${getSelectedLabel(name)} (${price>0?'+'+price.toFixed(2):'0.00'} JD)`;
+//   });
+
+//   localStorage.setItem('coffeeDetails', orderDetails.join(' | '));
+//   localStorage.setItem('totalPrice', total.toFixed(2));
+//   localStorage.setItem('deliveryPrice', deliveryPrice.toFixed(2));
+
+//   window.location.href='finalstep.html';
+// });
+</script>
+</body>
+</html>

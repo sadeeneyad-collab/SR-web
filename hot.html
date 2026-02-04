@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hot Coffees</title>
+<style>
+body {background:#fff;font-family:Arial,sans-serif;text-align:center;padding:20px;}
+.row {display:flex;justify-content:center;gap:20px;margin-bottom:30px;}
+.item {text-align:center;}
+.item img {width:200px;cursor:pointer;border-radius:10px;transition:transform 0.2s;}
+.item img:hover {transform:scale(1.05);}
+.price {margin-top:5px;font-weight:bold;color:#513021;}
+.name {font-size:18px;margin-top:5px;color:#333;}
+</style>
+</head>
+<body>
+
+<h1>Our Hot Coffees</h1>
+
+<div class="row">
+    <div class="item">
+        <img src="P9.jpeg" alt="Cappuccino" onclick="selectCoffee('Cappuccino',3.00)">
+        <div class="name">Cappuccino</div>
+        <div class="price">3.00 JD</div>
+    </div>
+    <div class="item">
+        <img src="P10.jpeg" alt="Americano" onclick="selectCoffee('Americano',2.75)">
+        <div class="name">Americano</div>
+        <div class="price">2.75 JD</div>
+    </div>
+    <div class="item">
+        <img src="P11.jpeg" alt="Turkish Coffee" onclick="selectCoffee('Turkish Coffee',2.00)">
+        <div class="name">Turkish Coffee</div>
+        <div class="price">2.00 JD</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="item">
+        <img src="p12.jpg" alt="Espresso" onclick="selectCoffee('Espresso',2.50)">
+        <div class="name">Espresso</div>
+        <div class="price">2.50 JD</div>
+    </div>
+    <div class="item">
+        <img src="p13.jpg" alt="Lotus Hot Drink" onclick="selectCoffee('Lotus Hot Drink',2.00)">
+        <div class="name">Lotus Hot Drink</div>
+        <div class="price">2.00 JD</div>
+    </div>
+    <div class="item">
+        <img src="p14.jpg" alt="Our Special Drink" onclick="selectCoffee('Our Special Drink',3.00)">
+        <div class="name">Our Special Drink</div>
+        <div class="price">3.00 JD</div>
+    </div>
+</div>
+
+<script>
+function selectCoffee(name, price){
+    localStorage.setItem('coffeeName', name);
+    localStorage.setItem('basePrice', price);
+    window.location.href = 'selectitem.html'; // صفحة الإضافات
+}
+</script>
+
+</body>
+</html>

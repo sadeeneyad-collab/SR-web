@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign in</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;height:100vh;display:flex;justify-content:center;align-items:center;background:#f7f3ef;font-family:"Poppins",sans-serif;}
+.container{background:#ffffffcc;width:380px;padding:30px 35px;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.15);text-align:center;}
+h2{margin-bottom:25px;color:#4b2e1e;}
+label{display:block;margin-top:12px;text-align:left;color:#4b2e1e;font-size:15px;position:relative;}
+.input-wrapper{position:relative;}
+input[type="text"],input[type="password"]{width:100%;padding:12px;margin-top:5px;border:1px solid #c8b7a6;border-radius:10px;font-size:15px;}
+.show-pass{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;color:#4b2e1e;}
+.btn{width:100%;padding:12px;border:none;margin-top:18px;font-size:16px;border-radius:12px;cursor:pointer;font-weight:600;transition:0.2s;}
+.login-btn{background-color:#6e432a;color:white;}
+.login-btn:hover{background-color:#573522;}
+.create-btn{background-color:#d4c2b2;color:#3b2a20;text-decoration:none;display:block;padding:12px;margin-top:10px;border-radius:12px;}
+.create-btn:hover{background-color:#c3b1a0;}
+</style>
+</head>
+<body>
+  <form action="sign_in.php" method="POST">
+<div class="container">
+    <h2>Sign In</h2>
+    <label for="user">Username:</label>
+    <input id="user" type="text" name="username" required>
+    <label for="pass">Password:</label>
+    <div class="input-wrapper">
+        <input id="pass" type="password" name="password" required>
+        <span class="show-pass" onclick="togglePass()">👁️</span>
+    </div>
+    <button class="btn login-btn" type="submit">Sign in</button>
+    <a href="sign_up.html" class="create-btn">Create account</a>
+</div>
+</form>
+<script>
+function togglePass(){
+    const pass=document.getElementById('pass');
+    pass.type = pass.type==='password'?'text':'password';
+}
+</script>
+</body>
+</html>
